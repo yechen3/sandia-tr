@@ -1,0 +1,26 @@
+This chapter is devoted to an analysis of the functional and timing models in
+SST when using the GPU component as a part of a generalized compute node. Since
+GPUs in HPC function solely as co-processors, functionally executing GPU-enabled
+binaries requires the CPU to initialize and launch kernels of work to the GPU.
+Figure~\ref{fig:sst_volta} shows the general simulation model used for the evaluation.
+The Command Link and Data Link serve as the transport mechanism for the CPU (host)
+to launch and coordinate work with the GPU (device). The other components in each
+model can be tailored to fit any host and device that one wishes to model.
+
+   \begin{figure}[!htb]
+      \centering
+      \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+      \includegraphics[width=.95\textwidth,keepaspectratio]{figures/sst_v100_model.png}
+      \captionsetup{format=hang, justification=centering, width=.75\textwidth}
+      \caption{SST Model of CPU With GPU Attached}
+      \label{fig:sst_volta}
+   \end{figure}
+
+\section{Functional Testing}
+\input{sst_gpgpu_perf_eval-kokkos}
+
+\section{Correlation with Volta}
+\input{sst_gpgpu_perf_eval-correlation}
+
+\section{Lulesh Performance Study}
+\input{sst_gpgpu_perf_eval-lulesh}

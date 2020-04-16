@@ -1,0 +1,188 @@
+The functional correctness of the model was validated using the unit tests from
+the Kokkos Kernels suite~\cite{kokkos_kernels}. The unit tests were compiled
+using the parameters in Table~\ref{tab:kokkos_build}. The target node
+architecture was assumed to be an Intel Broadwell attached to an NVIDIA Pascal
+GPUs. This target architecture was chosen based on hardware availability,
+specifically Sandia's Doom cluster, which is based on the CTS-1
+procurement. The SST model is derived from Figure~\ref{fig:sst_volta} using the
+model parameters in Table`\ref{tab:p100_params} to represent an NVIDIA P100
+SXM2~\cite{p100}.
+
+    \begin{table}[!htbp]
+        \centering
+        \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+        \captionsetup{width=.75\textwidth}
+        \caption{Kokkos Build Parameters}
+        \begin{tabular}{|l|}
+            \hline
+            KOKKOSKERNELS\_SCALARS=double          \\ \hline
+            KOKKOSKERNELS\_LAYOUTS=left            \\ \hline
+            KOKKOSKERNELS\_ORDINALS=int            \\ \hline
+            KOKKOSKERNELS\_OFFSETS=int             \\ \hline
+            KOKKOSKERNELS\_DEVICES=Cuda,Serial     \\ \hline
+            KOKKOS\_ARCH=BDW,Pascal60              \\ \hline
+         \end{tabular}
+        \label{tab:kokkos_build}
+    \end{table}
+
+    \begin{table}[!htbp]
+      \centering
+      \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+      \captionsetup{width=.75\textwidth}
+      \caption{Broadwell/P100 Model Parameters}
+      \subtable[CPU]{%
+         \begin{tabular}{|l|c|}
+            \hline
+            Clock                   & 1200MHz  \\ \hline
+            DDR Clock               & 2400     \\ \hline
+            DDR Capactiy            & 16384MiB \\ \hline
+            Mesh Frequency          & 800MHz   \\ \hline
+            Mesh Input Ports        & 1        \\ \hline
+            Mesh Output Ports       & 1        \\ \hline
+            Data Link Latency       & 23840ps  \\ \hline
+            Command Link Latency    & 23840ps  \\ \hline
+         \end{tabular}
+      }
+      \hspace{1cm}
+      \subtable[GPU]{%
+         \begin{tabular}{|l|c|}
+            \hline
+            Clock                 & 1328MHz          \\ \hline
+            SMs                   & 56               \\ \hline
+            L2 Slices             & 8                \\ \hline
+            L2 Capactiy           & 512KiB per slice \\ \hline
+            HBM Capacity          & 16384MiB         \\ \hline
+            HBM Stacks            & 4                \\ \hline
+            Crossbar Frequency    & 1000MHz          \\ \hline
+            Crossbar Input Ports  & 2                \\ \hline
+            Crossbar Output Ports & 1                \\ \hline
+         \end{tabular}
+      }
+      \label{tab:p100_params}
+   \end{table}
+
+Table~\ref{tab:kokkos_tests} shows the Kokkos Kernels unit tests that were run.
+With the current implementation of SST-GPU, 54 out of 89 tests run to completion
+and pass. The passing tests are highlighted in green. Of the remaining tests,
+all but the yellow tests fail in both SST-GPGPU and GPGPU-Sim. The tests in pink
+fail because the PTX parser cannot locate a post-dominator. This can happen when
+the control flow is too complex for the parser and a path from the point of
+divergence to a convergence point for all of the threads cannot be found. There
+are plans to work with the Kokkos Kernels developers to find a solution. The
+tests in purple fail because of a bug in the parser that creates an empty file,
+which should contain the PTX for the kernel, but the simulator crashes when it
+attempts to read from it. Neither the SST developers nor the GPGPU-Sim
+developers have been able to locate the problem. The tests in red fail because
+the problem size is overflowing the address space. Both teams are actively
+engaged on a fix for this. The two remaining tests, in yellow, run to completion
+and pass in GPGPU-Sim but have run for more than 10 days without completion
+in Balar. It is believed that they would complete successfully if given more run time.
+
+   \begin{table}[!htbp]
+      \centering
+      \setlength{\belowcaptionskip}{6pt plus 1pt minus 1pt}
+      \captionsetup{width=.75\textwidth}
+      \caption{Kokkos Kernels Unit Test Results}
+      \resizebox{\columnwidth}{!}{
+         \begin{tabular}{|>{\columncolor[HTML]{34FF34}}l |l|}
+            \hline
+            1                          & abs\_double                                                         \\ \hline
+            2                          & abs\_mv\_double                                                     \\ \hline
+            3                          & asum\_double                                                        \\ \hline
+            4                          & axpby\_double                                                       \\ \hline
+            5                          & axpby\_mv\_double                                                   \\ \hline
+            6                          & axpy\_double                                                        \\ \hline
+            7                          & axpy\_mv\_double                                                    \\ \hline
+            8                          & dot\_double                                                         \\ \hline
+            9                          & dot\_mv\_double                                                     \\ \hline
+            10                         & mult\_double                                                        \\ \hline
+            11                         & mult\_mv\_double                                                    \\ \hline
+            12                         & nrm1\_double                                                        \\ \hline
+            13                         & nrm1\_mv\_double                                                    \\ \hline
+            14                         & nrm2\_double                                                        \\ \hline
+            15                         & nrm2\_mv\_double                                                    \\ \hline
+            16                         & nrm2\_squared\_double                                               \\ \hline
+            17                         & nrm2\_squared\_mv\_double                                           \\ \hline
+            18                         & nrminf\_double                                                      \\ \hline
+            19                         & nrminf\_mv\_double                                                  \\ \hline
+            \cellcolor[HTML]{D1B3FF}20 & reciprocal\_double                                                  \\ \hline
+            \cellcolor[HTML]{D1B3FF}21 & reciprocal\_mv\_double                                              \\ \hline
+            22                         & scal\_double                                                        \\ \hline
+            23                         & scal\_mv\_double                                                    \\ \hline
+            24                         & sum\_double                                                         \\ \hline
+            25                         & sum\_mv\_double                                                     \\ \hline
+            26                         & update\_double                                                      \\ \hline
+            27                         & update\_mv\_double                                                  \\ \hline
+            \cellcolor[HTML]{FE0000}28 & gemv\_double                                                        \\ \hline
+            \cellcolor[HTML]{F8FF00}29 & gemm\_double                                                        \\ \hline
+            \cellcolor[HTML]{FF00FF}30 & sparse\_spgemm\_double\_int\_int\_TestExecSpace                     \\ \hline
+            \cellcolor[HTML]{FE0000}31 & sparse\_spadd\_double\_int\_int\_TestExecSpace                      \\ \hline
+            \cellcolor[HTML]{FF00FF}32 & sparse\_gauss\_seidel\_double\_int\_int\_TestExecSpace              \\ \hline
+            \cellcolor[HTML]{FF00FF}33 & sparse\_block\_gauss\_seidel\_double\_int\_int\_TestExecSpace       \\ \hline
+            34                         & sparse\_crsmatrix\_double\_int\_int\_TestExecSpace                  \\ \hline
+            \cellcolor[HTML]{F8FF00}35 & sparse\_blkcrsmatrix\_double\_int\_int\_TestExecSpace               \\ \hline
+            \cellcolor[HTML]{FF00FF}36 & sparse\_replaceSumIntoLonger\_double\_int\_int\_TestExecSpace       \\ \hline
+            \cellcolor[HTML]{FF00FF}37 & sparse\_replaceSumInto\_double\_int\_int\_TestExecSpace             \\ \hline
+            \cellcolor[HTML]{FF00FF}38 & graph\_graph\_color\_double\_int\_int\_TestExecSpace                \\ \hline
+            \cellcolor[HTML]{FF00FF}39 & graph\_graph\_color\_deterministic\_double\_int\_int\_TestExecSpace \\ \hline
+            \cellcolor[HTML]{FF00FF}40 & graph\_graph\_color\_d2\_double\_int\_int\_TestExecSpace            \\ \hline
+            \cellcolor[HTML]{FF00FF}41 & common\_ArithTraits                                                 \\ \hline
+            42                         & common\_set\_bit\_count                                             \\ \hline
+            43                         & common\_ffs                                                         \\ \hline
+            \cellcolor[HTML]{FE0000}44 & batched\_scalar\_serial\_set\_double\_double                        \\ \hline
+            45                         & batched\_scalar\_serial\_scale\_double\_double                      \\ \hline
+            \end{tabular}
+
+            \hspace{1cm}
+
+            \begin{tabular}{|>{\columncolor[HTML]{34FF34}}l |l|}
+            \hline
+            46                         & batched\_scalar\_serial\_gemm\_nt\_nt\_double\_double               \\ \hline
+            47                         & batched\_scalar\_serial\_gemm\_t\_nt\_double\_double                \\ \hline
+            48                         & batched\_scalar\_serial\_gemm\_nt\_t\_double\_double                \\ \hline
+            49                         & batched\_scalar\_serial\_gemm\_t\_t\_double\_double                 \\ \hline
+            50                         & batched\_scalar\_serial\_trsm\_l\_l\_nt\_u\_double\_double          \\ \hline
+            \cellcolor[HTML]{D1B3FF}51 & batched\_scalar\_serial\_trsm\_l\_l\_nt\_n\_double\_double          \\ \hline
+            52                         & batched\_scalar\_serial\_trsm\_l\_u\_nt\_u\_double\_double          \\ \hline
+            \cellcolor[HTML]{D1B3FF}53 & batched\_scalar\_serial\_trsm\_l\_u\_nt\_n\_double\_double          \\ \hline
+            54                         & batched\_scalar\_serial\_trsm\_r\_u\_nt\_u\_double\_double          \\ \hline
+            \cellcolor[HTML]{D1B3FF}55 & batched\_scalar\_serial\_trsm\_r\_u\_nt\_n\_double\_double          \\ \hline
+            56                         & batched\_scalar\_serial\_trsm\_l\_l\_t\_u\_double\_double           \\ \hline
+            \cellcolor[HTML]{D1B3FF}57 & batched\_scalar\_serial\_trsm\_l\_l\_t\_n\_double\_double           \\ \hline
+            58                         & batched\_scalar\_serial\_trsm\_l\_u\_t\_u\_double\_double           \\ \hline
+            \cellcolor[HTML]{D1B3FF}59 & batched\_scalar\_serial\_trsm\_l\_u\_t\_n\_double\_double           \\ \hline
+            60                         & batched\_scalar\_serial\_gemv\_nt\_double\_double                   \\ \hline
+            61                         & batched\_scalar\_serial\_gemv\_t\_double\_double                    \\ \hline
+            \cellcolor[HTML]{FE0000}62 & batched\_scalar\_serial\_trsv\_l\_nt\_u\_double\_double             \\ \hline
+            \cellcolor[HTML]{D1B3FF}63 & batched\_scalar\_serial\_trsv\_l\_nt\_n\_double\_double             \\ \hline
+            \cellcolor[HTML]{FE0000}64 & batched\_scalar\_serial\_trsv\_u\_nt\_u\_double\_double             \\ \hline
+            \cellcolor[HTML]{D1B3FF}65 & batched\_scalar\_serial\_trsv\_u\_nt\_n\_double\_double             \\ \hline
+            \cellcolor[HTML]{FE0000}66 & batched\_scalar\_team\_set\_double\_double                          \\ \hline
+            67                         & batched\_scalar\_team\_scale\_double\_double                        \\ \hline
+            68                         & batched\_scalar\_team\_gemm\_nt\_nt\_double\_double                 \\ \hline
+            69                         & batched\_scalar\_team\_gemm\_t\_nt\_double\_double                  \\ \hline
+            70                         & batched\_scalar\_team\_gemm\_nt\_t\_double\_double                  \\ \hline
+            71                         & batched\_scalar\_team\_gemm\_t\_t\_double\_double                   \\ \hline
+            72                         & batched\_scalar\_team\_trsm\_l\_l\_nt\_u\_double\_double            \\ \hline
+            \cellcolor[HTML]{D1B3FF}73 & batched\_scalar\_team\_trsm\_l\_l\_nt\_n\_double\_double            \\ \hline
+            74                         & batched\_scalar\_team\_trsm\_l\_u\_nt\_u\_double\_double            \\ \hline
+            \cellcolor[HTML]{D1B3FF}75 & batched\_scalar\_team\_trsm\_l\_u\_nt\_n\_double\_double            \\ \hline
+            76                         & batched\_scalar\_team\_trsm\_r\_u\_nt\_u\_double\_double            \\ \hline
+            \cellcolor[HTML]{D1B3FF}77 & batched\_scalar\_team\_trsm\_r\_u\_nt\_n\_double\_double            \\ \hline
+            78                         & batched\_scalar\_team\_trsm\_l\_l\_t\_u\_double\_double             \\ \hline
+            \cellcolor[HTML]{D1B3FF}79 & batched\_scalar\_team\_trsm\_l\_l\_t\_n\_double\_double             \\ \hline
+            80                         & batched\_scalar\_team\_trsm\_l\_u\_t\_u\_double\_double             \\ \hline
+            \cellcolor[HTML]{D1B3FF}81 & batched\_scalar\_team\_trsm\_l\_u\_t\_n\_double\_double             \\ \hline
+            82                         & batched\_scalar\_team\_gemv\_nt\_double\_double                     \\ \hline
+            83                         & batched\_scalar\_team\_gemv\_t\_double\_double                      \\ \hline
+            \cellcolor[HTML]{D1B3FF}84 & batched\_scalar\_serial\_lu\_double                                 \\ \hline
+            \cellcolor[HTML]{D1B3FF}85 & batched\_scalar\_serial\_inverselu\_double                          \\ \hline
+            86                         & batched\_scalar\_serial\_solvelu\_double                            \\ \hline
+            \cellcolor[HTML]{D1B3FF}87 & batched\_scalar\_team\_lu\_double                                   \\ \hline
+            \cellcolor[HTML]{D1B3FF}88 & batched\_scalar\_team\_inverselu\_double                            \\ \hline
+            89                         & batched\_scalar\_team\_solvelu\_double                              \\ \hline
+         \end{tabular}}
+      \label{tab:kokkos_tests}
+   \end{table}
+
+

@@ -1,0 +1,38 @@
+As the architectures of high-performance computing (HPC) evolves, there is a growing
+need to understand and quantify the performance and design benefits of
+emerging technologies. To complicate the design space, the rise of
+General-Purpose Graphics Processing Units (GPGPUs) and other compute
+accelerators, which are needed to handle the growing demands of compute-heavy
+workloads, have become a necessary component in both high-performance
+supercomputers and datacenter-scale systems. That the first exascale machines
+will leverage the massively parallel compute capabilities of GPUs
+\cite{snl_roadmap, ornl_roadmap, llnl_roadmap} is indicative of the growing
+necessity of accelerator-based node architectures to obtain high compute
+throughputs. As the software stack and
+programming model of GPUs and their peer accelerators continue to improve, there
+is every indication that this trend of accelerator integration will continue,
+leading to a diverse ecosystem of technologies. GPUs are likely to continue to
+play a role as discrete accelerators or integrated as a part of an SOC. As a
+result, architects who wish to study the design of large-scale systems will need
+to evaluate system and software designs using a GPU model. However, the focus of
+all publicly available cycle-level simulators ({\em e.g.} GPGPU-Sim~\cite{gpgpu_sim})
+to date has been on single-node performance. In order to truly study the problem at scale,
+and to permit larger workloads to be evaluated, a parallelizable, multi-node GPU
+simulator is necessary.
+
+The Structural Simulation Toolkit (SST)~\cite{sst} is a parallel discrete
+event-driven simulation framework that provides an infrastructure capable of
+modeling a variety of high performance computing systems at many different
+scales. Currently used by a wide variety of government agencies and computer
+manufacturers to design and simulate HPC architectures, and, supported by a
+Python and C++ code base with a large array of customization options, SST offers
+the HPC community powerful, highly customizable, tools to create and integrate
+models for evaluating current and future HPC node architectures and interconnect
+networks. What has been lacking, up to this point, has been a method
+to integrate accelerators into a node model in SST. This report builds upon
+previous work~\cite{sst_gpgpu}, providing more details on our efforts to
+integrate an open-source GPGPU simulator, GPGPU-Sim, into SST. This integration effort
+will provide SST users the ability to run GPGPU-based simulations using the Balar
+GPU component and will serve as a model for future accelerator integration
+studies.
+

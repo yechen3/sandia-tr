@@ -1,0 +1,17 @@
+Programmable accelerators have become commonplace in modern computing systems.
+Advances in programming models and the availability of massive amounts of data
+have created a space for massively parallel acceleration where the context for
+thousands of concurrent threads are resident on-chip. These threads are grouped
+and interleaved on a cycle-by-cycle basis among several massively parallel
+computing cores. The design of future supercomputers relies on an ability to
+model the performance of these massively parallel cores at scale.
+
+To address the need for a scalable, decentralized GPU model that can model large
+GPUs, chiplet-based GPUs and multi-node GPUs, this report details the first
+steps in integrating the open-source, execution driven GPGPU-Sim into the SST
+framework. The first stage of this project, creates two elements: a kernel
+scheduler SST element accepts work from SST CPU models and schedules it to an
+SM-collection element that performs cycle-by-cycle timing using SST’s
+MemHierarchy to model a flexible memory system.
+%Initial results indicate a close
+%correlation between the new GPU-SST model and real hardware.

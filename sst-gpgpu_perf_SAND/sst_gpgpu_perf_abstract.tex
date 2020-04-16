@@ -1,0 +1,16 @@
+Programmable accelerators have become commonplace in modern computing systems.
+Advances in programming models and the availability of unprecedented amounts of data
+have created a space for massively parallel accelerators capable of maintaining
+context for thousands of concurrent threads resident on-chip. These threads are
+grouped and interleaved on a cycle-by-cycle basis among several massively
+parallel computing cores. One path for the design of future supercomputers
+relies on an ability to model the performance of these massively parallel cores
+at scale.
+
+The SST framework has been proven to scale up to run simulations containing tens
+of thousands of nodes. A previous report described the initial integration of
+the open-source, execution-driven GPU simulator, GPGPU-Sim, into the SST
+framework. This report discusses the results of the integration and how to use
+the new GPU component in SST. It also provides examples of what it can be used
+to analyze and a correlation study showing how closely the execution matches
+that of a Nvidia V100 GPU when running kernels and mini-apps.
