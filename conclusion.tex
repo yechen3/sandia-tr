@@ -1,7 +1,10 @@
-This report described the final integration of phase one of the SST-GPU project.
+This report described the final integration of the SST-GPU project.
 Functional validation against the Kokkos Kernels unit tests shows that the GPU
-component can successfully run more than 60\% of the tests with a path to reach
-a coverage of greater than 90\%. Correlation with the Waterman V100 testbed is
-excellent, showing 4-22\% error in the runtime for the applications considered.
-The next phase of the project will focus on further disaggregating the GPU to
-enable truly scaled GPU performance in a multi-process MPI simulation.
+component can successfully run more than XX\% of the tests with a path to reach
+a coverage of greater than XX\%. Correlation with the Waterman V100 testbed is
+excellent, showing XX\% error in the runtime for the applications considered.
+The final phase of the project has involved parallelizing the scheduler and
+groups of SMs, dubbed {\em SM blobs}, using both multi-threaded and
+multi-process SST. Initial performance results demonstrate good scalability
+using default scheduling policies with additional opportunities to improve
+parallel scheduling performance.
