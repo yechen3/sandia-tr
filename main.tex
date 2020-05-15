@@ -26,6 +26,7 @@
 \usepackage[compact]{titlesec}
 \usepackage[usenames,dvipsnames]{xcolor}
 %\usepackage{comment}
+\usepackage{xcolor,colortbl}
 
 % \usepackage[hidelinks]{hyperref}
 \usepackage{multirow}
@@ -34,11 +35,19 @@
 \usepackage[font=footnotesize,font=bf,it]{caption} 
 \usepackage{epstopdf} 
 %\usepackage{subfig, enumerate}
-\usepackage{subcaption}
+%\usepackage{subcaption}
+\usepackage[FIGBOTCAP,normal,bf,tight]{subfigure}
 \usepackage{csquotes}
 \usepackage{tabularx}
 \usepackage{beramono}
 \usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{mathptmx}	% Use the Postscript Times font
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
 \PassOptionsToPackage{hyphens}{url}\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
 
 \urlstyle{same}
@@ -124,16 +133,34 @@
 
 \pagenumbering{arabic}
 
-\input{sst-gpgpu_SAND/sst_gpgpu_abstract}
-\input{sst-gpgpu_SAND/sst_gpgpu_intro}
-\input{sst-gpgpu_SAND/sst_gpgpu_sched}
-\input{sst-gpgpu_SAND/sst_gpgpu_sm}
-\input{sst-gpgpu_SAND/sst_gpgpu_eval}
-\input{sst-gpgpu_SAND/sst_gpgpu_conclusion}
-\input{sst-gpgpu_SAND/sst_gpgpu_ack}
+    \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_abstract}
+\section{Introduction}
+    \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_intro}
+\section{Balar Components}
+    \subsection{GPU Scheduler}
+        \input{sst-gpgpu_SAND/sst_gpgpu_sched}
+    \subsection{SM Blobs}
+        \input{sst-gpgpu_SAND/sst_gpgpu_sm}
+\section{Evaluation}
+    \subsection{Correlation}
+        \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval-correlation}
+    \subsection{Kokkos}
+        \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval-kokkos}
+    \subsection{Lulesh}
+        \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval-lulesh}
+    \subsection{Parallel Simulation Performance}
+        \input{performance.tex}
+%\input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval}
+\section{Conclusion}
+    \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_conclusion}
 
+\clearpage
+\section*{Acknowledgment}
+\input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_ack}
 
-\bibliographystyle{IEEEtranS}
-\bibliography{sst-gpgpu_perf_SAND/sst_gpgpu_bib}
+\clearpage
+
+\bibliographystyle{plain}
+\bibliography{sst-gpgpu_perf_SAND/sst_gpgpu_perf_SAND}
 
 \end{document}
