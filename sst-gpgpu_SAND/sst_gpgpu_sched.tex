@@ -6,7 +6,7 @@ two types of discrete SST components -- a CTA scheduler and SM groups \cite{v100
 When CUDA functions are called from the CPU component, they are intercepted and translated
 into messages that are sent over SST links to the GPU (along with the associated
 parameters). Table \ref{tab:apis} enumerates the CUDA API calls currently intercepted
-and sent to the GPU elements. These calls are enough to enable the execution of
+and sent to the GPU components. These calls are enough to enable the execution of
 a number of CUDA SDK kernels, DoE proxy apps as well as a collection of Kokkos Unit
 tests. Table \ref{tab:kokkos_tests} lists the number of Kokkos unit tests that
 pass with our current implementation of SST-GPU, which is about 60\%. There is
@@ -17,42 +17,45 @@ ongoing work with the PTX parser to increase the number of running kernels.
         \centering
         \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
         \captionsetup{width=.75\textwidth}
-        \caption {Intercepted CUDA API Calls Forwarded to GPU Model}
-            \begin{tabular}{|p{14cm} | p{3cm}|}
-%             \multicolumn{1}{c} {\textbf{API Call}} \\
-            \hline
-            \texttt{\textunderscore \textunderscore cudaRegisterFatBinary} \\
-            \hline
-            \texttt{\textunderscore \textunderscore cudaRegisterFunction} \\
-            \hline
-            \texttt{cudaMalloc} \\
-            \hline
-            \texttt{cudaMemcpy} \\
-            \hline
-            \texttt{cudaMemset} \\
-            \hline
-            \texttt{cudaConfigureCall} \\
-            \hline
-            \texttt{cudaSetupArgument} \\
-            \hline
-            \texttt{cudaFree} \\
-            \hline
-            \texttt{cudaLaunch} \\
-            \hline
-            \texttt{cudaGetLastError} \\
-            \hline
-            \texttt{cudaFuncSetCacheConfig} \\
-            \hline
-            \texttt{cudaSetDevice} \\
-            \hline
-            \texttt{cudaGetDeviceCount} \\
-            \hline
-            \texttt{cudaGetDeviceProperties} \\
-            \hline
-            \texttt{\textunderscore \textunderscore cudaRegisterVar} \\
-            \hline
-            \texttt{cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags} \\
-            \hline
+        \caption {CUDA API Calls Forwarded to the GPU components. Sched and SM represent CUDA calls
+        sent to the scheduler or the SM groups. }
+            \begin{tabular}{|l|c|c|}
+                \hline
+                \texttt{CUDACall} & Sched & SM \\
+                \hline
+                \hline
+                \texttt{\textunderscore \textunderscore cudaRegisterFatBinary} & Yes & Yes \\
+                \hline
+                \texttt{\textunderscore \textunderscore cudaRegisterFunction} & Yes & Yes \\
+                \hline
+                \texttt{cudaMalloc} & Yes & No \\
+                \hline
+                \texttt{cudaMemcpy} & Yes & No \\
+                \hline
+                \texttt{cudaMemset} & Yes & No \\
+                \hline
+                \texttt{cudaConfigureCall} & Yes & Yes \\
+                \hline
+                \texttt{cudaSetupArgument} & Yes & Yes \\
+                \hline
+                \texttt{cudaFree} & Yes & No \\
+                \hline
+                \texttt{cudaLaunch} & Yes & Yes \\
+                \hline
+                \texttt{cudaGetLastError} & Yes & No \\
+                \hline
+                \texttt{cudaFuncSetCacheConfig} & Yes & No \\
+                \hline
+                \texttt{cudaSetDevice} & Yes & No \\
+                \hline
+                \texttt{cudaGetDeviceCount} & Yes & No \\
+                \hline
+                \texttt{cudaGetDeviceProperties} & Yes & No \\
+                \hline
+                \texttt{\textunderscore \textunderscore cudaRegisterVar} & Yes & Yes \\
+                \hline
+                \texttt{cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags} & Yes & No \\
+                \hline
             \end{tabular}
         \label{tab:apis}
     \end{table}
@@ -61,30 +64,28 @@ ongoing work with the PTX parser to increase the number of running kernels.
 Aside from the basic functional model provided by GPU-SST, an initial
 performance model has also been developed. Figure \ref{fig:gpu_sched} details
 the overall architecture. A CPU component (Ariel in the initial implementation)
-is connected via SST links to 2 GPU components: the SMs, which implement the
-timing and functional model for the GPU cores, and a centralized kernel and CTA
-scheduler (GPUSched). When CUDA calls are intercepted from the CPU, messages are
-sent to both the SMs and the GPU scheduler. Messages related to memory copies
-and other information necessary to populate the GPU functional model are sent
-directly to the SMs element, since the functional model for executing the GPU
-kernels lives inside the SMs element. Calls related to enqueuing kernels for
-execution are sent to the GPU scheduler element, which co-ordinates the
-launching of CTAs on the SMs, e.g. \texttt{cudaConfigureCall} and
-\texttt{cudaLaunch}.
-
+is connected via SST links to 2 types of GPU components: a centralized kernel and
+CTA scheduler (GPUSched) and SM Groups, which implement the timing
+and functional model for the GPU cores. When CUDA calls are intercepted
+from the CPU, API commands are sent to the CTA scheduler. When the scheduler
+launches a CTA for a kernel, CTA commands are sent to the corresponding SM groups
+to execute. CUDA calls related to queuing kernels and memory operations are
+handled by the scheduler, while execution related CUDA calls are redirect
+to SM groups, since the functional model for executing the GPU CTAs lives inside
+the SM groups. Table \ref{tab:apis} shows where CUDA calls send to. 
 
    \begin{figure}[!htb]
       \centering
       \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
       \includegraphics[width=.90\textwidth,keepaspectratio]{figures/2_1-eps-converted-to-crop.pdf}
       \captionsetup{width=.90\textwidth}
-      \caption{SST Element architecture for kernel/CTA scheduler and SMs components}
+      \caption{SST component architecture for CTA scheduler and SM groups}
       \label{fig:gpu_sched}
    \end{figure}
 
 
-As CTAs complete on the SMs, messages are sent back to the GPU scheduler
-element, which pushes new work to the SMs from enqueued kernels as needed.
+As CTAs complete on the SMs, commands are sent back to the GPU scheduler
+component, which pushes new work to the SMs from enqueued kernels as needed.
 Memory copies from the CPU to GPU address space are handled on a configurable
 page-size granularity, similar to how conventional CUDA unified memory handles
 the transfer of data from CPU to GPU memories.
@@ -92,9 +93,9 @@ the transfer of data from CPU to GPU memories.
    \begin{figure}[!htb]
       \centering
       \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
-      \includegraphics[width=.90\textwidth,keepaspectratio]{figures/scheduler.pdf}
+      \includegraphics[width=.90\textwidth,keepaspectratio]{figures/scheduler.eps}
       \captionsetup{width=.75\textwidth}
-      \caption{Centralized GPU Scheduler component}
+      \caption{Centralized GPU kernel and CTA scheduler component}
       \label{fig:sched}
    \end{figure}
 
