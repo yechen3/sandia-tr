@@ -2,8 +2,8 @@ The first step in integrating GPGPU-Sim into SST is to handle the interaction
 with an SST CPU component. Since GPUs today function solely as co-processors,
 functionally executing GPU-enabled binaries requires the CPU to initialize and
 launch kernels of work to the GPU. In our model, the GPU is constructed out of
-two discrete SST components -- a scheduler and a SM block \cite{v100}. When CUDA
-functions are called from the CPU component, they are intercepted and translated
+two types of discrete SST components -- a CTA scheduler and SM groups \cite{v100}.
+When CUDA functions are called from the CPU component, they are intercepted and translated
 into messages that are sent over SST links to the GPU (along with the associated
 parameters). Table \ref{tab:apis} enumerates the CUDA API calls currently intercepted
 and sent to the GPU elements. These calls are enough to enable the execution of
@@ -29,6 +29,8 @@ ongoing work with the PTX parser to increase the number of running kernels.
             \hline
             \texttt{cudaMemcpy} \\
             \hline
+            \texttt{cudaMemset} \\
+            \hline
             \texttt{cudaConfigureCall} \\
             \hline
             \texttt{cudaSetupArgument} \\
@@ -38,6 +40,14 @@ ongoing work with the PTX parser to increase the number of running kernels.
             \texttt{cudaLaunch} \\
             \hline
             \texttt{cudaGetLastError} \\
+            \hline
+            \texttt{cudaFuncSetCacheConfig} \\
+            \hline
+            \texttt{cudaSetDevice} \\
+            \hline
+            \texttt{cudaGetDeviceCount} \\
+            \hline
+            \texttt{cudaGetDeviceProperties} \\
             \hline
             \texttt{\textunderscore \textunderscore cudaRegisterVar} \\
             \hline
