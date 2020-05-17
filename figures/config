@@ -6,7 +6,7 @@ max_reqs_cycle: 3
 
 [ariel]
 executable: ./vectorAdd
-gpu_enabled: 1
+gpu_mode: 2
 
 [Memory]
 clock: 200MHz
@@ -25,6 +25,7 @@ gpu_l2_parts: 32
 gpu_l2_capacity: 192KiB
 gpu_cpu_latency: 23840ps
 gpu_cpu_bandwidth: 16GB/s
+num_sm_blobs: 1
 
 [GPUMemory]
 clock: 1GHz

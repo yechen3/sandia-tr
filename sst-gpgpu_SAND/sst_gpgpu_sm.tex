@@ -9,21 +9,23 @@ assembly of CUDA kernels.
    \begin{figure}[!htb]
       \centering
       \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
-      \includegraphics[width=.90\textwidth,keepaspectratio]{figures/transfer_flow.pdf}
+      \includegraphics[width=.90\textwidth,keepaspectratio]{figures/transfer_flow.eps}
       \captionsetup{width=.75\textwidth}
-      \caption{Functional model support}
+      \caption{Data transfer flow for functional simulation}
       \label{fig:gpu_transfer_model}
    \end{figure}
 
+As shown in \ref{fig:gpu_transfer_model}, 
 
 Supporting the functional model of GPGPU-Sim also requires transferring values
 from the CPU application to the GPU memory system. This is solved by leveraging
-the inter-process communication tunnel framework from SST-Core, as shown in
-\ref{fig:gpu_transfer_model}. Chunks of memory are transferred from the CPU
-application to the GPU memory system at the granularity of a page (4KiB). The
-transfer of pages is a blocking operation, therefore all stores to the GPU
-memory system must be completed before another page is transferred or another
-API call is processed.
+the link between CPU/GPU and memory hierarchy from SST, as shown in
+\ref{fig:gpu_transfer_model}. Data are transferred from the application to Ariel through
+inter-process communication tunnels. Ariel then communicates with the GPU scheduler through
+the CPU memory. The GPU schduler then write the data to the GPU memory. When an SM
+request a piece of data, the SM accesses the GPU memory for it.
+The tunnels utilize 4KiB size as the granularity, while CPU and GPU components
+employ larger size non-cacheable requests to access to CPU and GPU memories.
 
 To model GPU performance, the memory system of the public GPGPU-Sim is
 completely removed. Instead, all accesses to GPU memory are sent though SST

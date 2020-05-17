@@ -113,5 +113,5 @@ scheduler clock ticks trigger CTA launches to SMs, when space is available and
 there is a pending kernel. On every tick, the scheduler issues a CTA launch
 command for currently unfinished kernels if any CTA slot is available or tries
 to fetch a new kernel launch from kernel queue. The CTA handler also waits for
-SMs to reply the CTA finish message, so that CTA slots in the SM launch table may
+SMs to reply the CTA finish message, so that CTA slots in the SM launch table can
 be freed.
