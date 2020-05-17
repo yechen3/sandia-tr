@@ -7,5 +7,12 @@ processes on one node or multiple nodes, we refactor GPGPU-Sim simulator to avoi
 static and global variables. Instead, GPU components construct a GPU context data
 structure before using GPGPU-Sim library so that each component can keep an
 individual context. Moreover, we design an option inside the context data structure
-to manage the library under scheduler mode or SM mode. GPGPU-Sim library works as
-a CTA scheduler to issue CTAs and works as a group of GPU cores under SM mode.
+to manage the library in scheduler mode or SM mode. GPGPU-Sim library works as
+a CTA scheduler to issue CTAs in scheduler mode and works as a group of GPU cores in SM mode.
+
+GPGPU-Sim simulator separates functional model with performance model, so the
+instruction operations are simulated on the issue pipeline stage. However, the load store
+unit (LSU) sends out memory requests to GPU memory hierarchy on the execution stage.
+This design breaks if SM groups need to access the GPU memory components.
+Therefore, we replay the memory instruction operations after the data returned
+to LSU in SM mode.
