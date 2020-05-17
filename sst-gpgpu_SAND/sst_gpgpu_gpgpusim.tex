@@ -1,0 +1,11 @@
+We use GPGPU-Sim simulator as a library to provide CTA scheduling and GPU core
+functionality. GPU Scheduler and SM Group components invokes on GPGPU-Sim library
+(libcudart.so) with internal API calls.
+
+To support SST-GPU to run on one thread, on multiple threads or on multiple
+processes on one node or multiple nodes, we refactor GPGPU-Sim simulator to avoid
+static and global variables. Instead, GPU components construct a GPU context data
+structure before using GPGPU-Sim library so that each component can keep an
+individual context. Moreover, we design an option inside the context data structure
+to manage the library under scheduler mode or SM mode. GPGPU-Sim library works as
+a CTA scheduler to issue CTAs and works as a group of GPU cores under SM mode.
