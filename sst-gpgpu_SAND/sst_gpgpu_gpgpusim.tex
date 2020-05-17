@@ -16,3 +16,20 @@ unit (LSU) sends out memory requests to GPU memory hierarchy on the execution st
 This design breaks if SM groups need to access the GPU memory components.
 Therefore, we replay the memory instruction operations after the data returned
 to LSU in SM mode.
+
+The SST-GPU components call to GPGPU-Sim library for functionality, while
+GPGPU-Sim library calls back to the GPU components for CTA command and
+memory accesses to GPU memory hierarchy. However, we separate the compilation
+of GPGPU-Sim simulator and SST components so that GPGPU-Sim can be compatible
+to mainstream. To achieve the independent compliation, we design the parent
+classes for scheduler and memory interface, so that the components can rewrite
+to utilize the SST infrastructure.
+
+   \begin{figure}[!htb]
+      \centering
+      \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+      \includegraphics[width=.90\textwidth,keepaspectratio]{figures/3_1.eps}
+      \captionsetup{width=.75\textwidth}
+      \caption{Timing and memory model for SMs component}
+      \label{fig:gpu_mem_model}
+   \end{figure}
