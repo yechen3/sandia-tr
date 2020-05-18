@@ -1,8 +1,8 @@
 We use GPGPU-Sim simulator as a library to provide CTA scheduling and GPU core
-functionality. GPU Scheduler and SM Group components invokes on GPGPU-Sim library
+functionality. GPU Scheduler and SM Group components invoke on GPGPU-Sim library
 (libcudart.so) with internal API calls.
 
-To support SST-GPU to run on one thread, on multiple threads or on multiple
+To support SST-GPU to run on one thread, on multiple threads, or on multiple
 processes on one node or multiple nodes, we refactor GPGPU-Sim simulator to avoid
 static and global variables. Instead, GPU components construct a GPU context data
 structure before using GPGPU-Sim library so that each component can keep an
@@ -11,9 +11,9 @@ to manage the library in scheduler mode or SM mode. GPGPU-Sim library works as
 a CTA scheduler to issue CTAs in scheduler mode and works as a group of GPU cores in SM mode.
 
 GPGPU-Sim simulator separates functional model with performance model, so the
-instruction operations are simulated on the issue pipeline stage. However, the load store
-unit (LSU) sends out memory requests to GPU memory hierarchy on the execution stage.
-This design breaks if SM groups need to access the GPU memory components.
+instruction operations are simulated on the issue pipeline stage. However, the load-store
+unit (LSU) sends out memory requests to the GPU memory hierarchy on the execution stage.
+This design breaks if SM groups need to access GPU memory components.
 Therefore, we replay the memory instruction operations after the data returned
 to LSU in SM mode.
 
@@ -21,7 +21,7 @@ The SST-GPU components call to GPGPU-Sim library for functionality, while
 GPGPU-Sim library calls back to the GPU components for CTA command and
 memory accesses to GPU memory hierarchy. However, we separate the compilation
 of GPGPU-Sim simulator and SST components so that GPGPU-Sim can be compatible
-to mainstream. To achieve the independent compliation, we design the parent
+with the mainstream. To achieve the independent compilation, we design the parent
 classes for scheduler and memory interface, so that the components can rewrite
 to utilize the SST infrastructure.
 
