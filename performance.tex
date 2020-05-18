@@ -17,5 +17,5 @@ but not memory accesses. We launch 84 CTAs and each with 256 threads to make sur
 Figure \ref{fig:par-perf} shows the total time cost to run Vector Addition
 with the different numbers of SM groups. We assign CPU and its memory to one thread and
 each of the SM group and its memory hierarchy to one thread. The GPU scheduler is attached
-to the first SM group thread. We achieve up to 11\% speedup with 2 SM groups. Note that
+to the first SM group thread. We achieve on average 5\% speedup with 2 SM groups. Note that
 a significant amount of time are due to initialization, configuration, and memory copy.
