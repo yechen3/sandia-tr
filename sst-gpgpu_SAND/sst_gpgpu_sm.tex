@@ -1,6 +1,6 @@
 To support the GPGPU-Sim functional model, a number of the simulator's overloaded
-CUDA Runtime API calls were updated. A number of functions that originally assumed
-the application and simulator were within same address space now support them being
+CUDA Runtime API calls were updated. Several functions that originally assumed
+the application and simulator were within the same address space now support them being
 decoupled. Initialization functions, such as \texttt{\textunderscore \textunderscore
 cudaRegisterFatBinary}, now take paths to the original application to obtain the PTX
 assembly of CUDA kernels.
@@ -20,8 +20,8 @@ from the CPU application to the GPU memory system. This is solved by leveraging
 the link between CPU/GPU and memory hierarchy from SST, as shown in
 \ref{fig:gpu_transfer_model}. Data are transferred from the application to Ariel through
 inter-process communication tunnels. Ariel then communicates with the GPU scheduler through
-the CPU memory. The GPU schduler then write the data to the GPU memory. When an SM
-request a piece of data, the SM accesses the GPU memory for it.
+the CPU memory. The GPU scheduler then writes the data to the GPU memory. When an SM
+requests a piece of data, the SM accesses the GPU memory for it.
 The tunnels utilize 4KiB size as the granularity, while CPU and GPU components
 employ larger size non-cacheable requests to access to CPU and GPU memories.
 
