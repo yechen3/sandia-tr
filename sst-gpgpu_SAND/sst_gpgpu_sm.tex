@@ -31,7 +31,8 @@ GPU Scheduler. Unlike the Ariel, there's no MMU inside the GPU so the only thing
 needs to do is to move the pointer.
 
 Data are transferred from the application to Ariel through
-inter-process communication tunnels. Ariel then communicates with the GPU scheduler through
+inter-process communication tunnels when \texttt{cudaMalloc} is called. 
+Ariel then communicates with the GPU scheduler through
 the CPU memory. The GPU scheduler then writes the data to the GPU memory. When an SM
 requests a piece of data, the SM accesses the GPU memory for it.
 The tunnels utilize 4KiB size as the granularity, while the CPU and the GPU Scheduler
