@@ -80,8 +80,10 @@ and pass in GPGPU-Sim but have run for more than 7 days without completion in SS
       \setlength{\belowcaptionskip}{6pt plus 1pt minus 1pt}
       \captionsetup{width=.75\textwidth}
       \caption{Kokkos Kernels Unit Test Results}
+       {\raggedright \swatch{green}=passed \  \swatch{red}=failed with wrong value \  \swatch{yellow}=random failed \  \swatch{magenta}=non-existing Others=failed\par}
+      \vspace{1ex}
       \resizebox{\columnwidth}{!}{
-         \begin{tabular}{|>{\columncolor[HTML]{34FF34}}l |l|}
+          \begin{tabular}{|>{\columncolor[HTML]{34FF34}}l |l|}
             \hline
             1                          & abs\_double                                                         \\ \hline
             2                          & abs\_mv\_double                                                     \\ \hline

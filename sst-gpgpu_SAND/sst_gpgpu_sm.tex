@@ -18,12 +18,28 @@ assembly of CUDA kernels.
 Supporting the functional model of GPGPU-Sim also requires transferring values
 from the CPU application to the GPU memory system. This is solved by leveraging
 the link between CPU/GPU and memory hierarchy from SST, as shown in
-\ref{fig:gpu_transfer_model}. Data are transferred from the application to Ariel through
+\ref{fig:gpu_transfer_model}. Before actually storing values to memory, appropriate 
+CPU memory and GPU memory spaces need to be allocated. As a matter of fact, both CPU memory 
+and GPU memory are pre-allocated, and their sizes are set in the configuration file. 
+Therefore, the rest of \"allocation\" just needs to avoid collision. A simple way to do this is
+keeping a pointer to the current boundry of heap but at the cost of unable to free memory chunks. 
+CPU memory allocation is done by Ariel in the CPU simulation -- an option argument is set inside 
+configuration file to intercept memory allocation, but other load/store instructions are ignored for 
+the time reason. \texttt{malloc} is sent from application to Ariel and the MMU of Ariel takes 
+over to settle page allocation; while GPU memory allocation is completed by the 
+GPU Scheduler. Unlike the Ariel, there's no MMU inside the GPU so the only thing \texttt{cudaMalloc} 
+needs to do is to move the pointer.
+
+Data are transferred from the application to Ariel through
 inter-process communication tunnels. Ariel then communicates with the GPU scheduler through
 the CPU memory. The GPU scheduler then writes the data to the GPU memory. When an SM
 requests a piece of data, the SM accesses the GPU memory for it.
-The tunnels utilize 4KiB size as the granularity, while CPU and GPU components
-employ larger size non-cacheable requests to access to CPU and GPU memories.
+The tunnels utilize 4KiB size as the granularity, while the CPU and the GPU Scheduler
+employ larger size non-cacheable requests to access to the CPU memory. When it comes to
+GPU memory, some particular attention needs to be paid. The GPU Scheduler communicates with 
+the GPU memory in partition size because only one partition can be accessed at a single time 
+. The SM transfers data to/from the GPU memory in cache line size because store/load 
+instructions manipulate data in cache line granularity (more details in next paragraph). 
 
 To model GPU performance, the memory system of the public GPGPU-Sim is
 completely removed. Instead, all accesses to GPU memory are sent though SST
@@ -62,4 +78,4 @@ configuration for the GPU, CramSim and Network components is shown in Listing
 }
 
 \lstinputlisting[caption=Sample SST-GPGPU Configuration, label=lst:sst_config]{figures/config}
-\clearpage
+
