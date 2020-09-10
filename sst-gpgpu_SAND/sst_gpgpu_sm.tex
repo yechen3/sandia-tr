@@ -38,8 +38,8 @@ requests a piece of data, the SM accesses the GPU memory for it.
 The tunnels utilize 4KiB size as the granularity, while the CPU and the GPU Scheduler
 employ larger size non-cacheable requests to access to the CPU memory. When it comes to
 GPU memory, some particular attention needs to be paid. The GPU Scheduler communicates with 
-the GPU memory in partition size because only one partition can be accessed at a single time 
-. The SM transfers data to/from the GPU memory in cache line size because store/load 
+the GPU memory in partition size because only one partition can be accessed at a single time. 
+The SM transfers data to/from the GPU memory in cache line size because store/load 
 instructions manipulate data in cache line granularity (more details in next paragraph). 
 
 To model GPU performance, the memory system of the public GPGPU-Sim is
