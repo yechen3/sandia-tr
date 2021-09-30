@@ -136,7 +136,7 @@
 
 \pagenumbering{arabic}
 
-    \input{UVMSmart/sst_gpgpu_perf_abstract}
+    \input{UVMSmart/uvm_abstract}
 \section{Introduction}
     \input{UVMSmart/uvm_intro}
 \section{Background}
@@ -145,19 +145,19 @@
     \subsection{GPU Page-Fault Handling}
 	\input{UVMSmart/uvm_bg_page-fault}
     \subsection{Hardware Prefetchers}
-	\input{UVMSmart/sst_gpgpu_perf_prefetchers}
+	\input{UVMSmart/uvm_bg_prefetcher}
 \section{UVM Smart Integration}
     \subsection{Merge Code}
-        \input{UVMSmart/sst_gpgpu_sched}
+        \input{UVMSmart/uvm_merge_code}
     \subsection{Optimize Simulation Performance}
-        \input{UVMSmart/sst_gpgpu_opt}
+        \input{UVMSmart/uvm_sim_perf}
     \subsection{Improve TLB performance}
-        \input{UVMSmart/sst_gpgpu_tlb}
+        \input{UVMSmart/uvm_tlb_perf}
 \section{Evaluation}
     \subsection{Correlation}
-        \input{UVMSmart/sst_gpgpu_perf_eval-correlation}
+        \input{UVMSmart/uvm_eval-correlation}
     \subsection{TLB Performance}
-        \input{UVMSmart/sst_gpgpu_perf_eval-tlb}
+        \input{UVMSmart/uvm_eval-tlb}
     
 %\input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval}
 %\section{Conclusion}
@@ -171,6 +171,6 @@
 
 \nocite{*}
 \bibliographystyle{plain}
-\bibliography{sst-gpgpu_perf_SAND/sst_gpgpu_perf_SAND}
+\bibliography{UVMSmart/uvm_ref}
 
 \end{document}
