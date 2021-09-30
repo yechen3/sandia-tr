@@ -1,0 +1,15 @@
+[GPU]
+clock: 1200MHz
+gpu_cores: 80
+gpu_l2_parts: 32
+gpu_l2_capacity: 192KiB
+gpu_cpu_latency: 23840ps
+gpu_cpu_bandwidth: 16GB/s
+
+[GPUMemory]
+page_size: 4KB
+page_fault_handling_latency: 45 $\mu s$
+page_table_walk_latency: 100
+
+[GPU-CPU Interconnect]
+PCIe 3.0 16x, 8 GTPS per channel per direction We

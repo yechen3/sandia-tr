@@ -1,0 +1,101 @@
+Table \ref{tab:apis} enumerates the CUDA API calls regarding to UVM currently supported by UVM Smart. These calls are enough to enable the execution of shared virtual memory space programming model. UVM Smart mainly adds on the modeling of far-fault handling latency and PCI-e transfer latency. Based on the Table \ref{tab:pcie}, a function to express PCI-e bandwidth as a function of transfer size is deducted. In the simulator, PCI-e transfer latency is calculated based on this expression.  an additional 100 core cycles for page table walk. The simulator makes simplified assumptions to model TLB and page table. The TLB look up is performed in a single core cycle based on the assumption of fully-associative TLB. A multi-threaded model for page table walk is used and an additional fixed 100 core cycles for page table walk is considered.
+
+    \begin{table}[!htbp]
+        \centering
+        \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+        \captionsetup{width=.75\textwidth}
+        \caption {CUDA API Calls Supported by UVMSmart.}
+            \begin{tabular}{|l|l|c|}
+                \hline
+                \textbf{Transfer Size (KB)} & \textbf{PCI-e Bandwidth (GB/s)} \\
+                \hline
+                4 & 3.2219 \\
+                \hline
+                16 & 6.4437 \\ 
+                \hline
+                64 & 8.4771  \\
+                \hline
+	        256 & 10.508  \\
+                \hline
+		1024 & 11.223  \\
+                \hline
+            \end{tabular}
+        \label{tab:pcie}
+    \end{table}
+
+    \begin{table}[!htbp]
+        \centering
+        \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+        \captionsetup{width=.75\textwidth}
+        \caption {CUDA API Calls Supported by UVMSmart.}
+            \begin{tabular}{|l|c|c|}
+                \hline
+                CUDACall  \\
+                \hline
+                \hline
+                \texttt{cudaMallocManaged}  \\
+                \hline
+                \texttt{cudaDeviceSynchronize}  \\
+                \hline
+                \texttt{cudaMemprefetchAsync}  \\
+                \hline
+            \end{tabular}
+        \label{tab:apis}
+    \end{table}
+    
+The first step in merging UVMSmart into GPGPU-Sim is to understand the difference between them. Since UVMSmart extended GPGPU-Sim v3.2, the major change is a new class, called \texttt{gmmu\_t}, that handles the gpu memory management added to UVMSmart. This class stores necessary information about memory requests from all shader cores that missed in TLB. Then it figures out whether there is page-fault by looking up the page table. If page-fault, it would coalesce faults to the same page and handle these page faults one by one. If hardware prefetched is enabled, it would bring extra pages to GPU memory in the light of prefetching algorithms(Section B.4). And the update from GPGPU-Sim v3.2 to v4.0 has some minor changes, like making simulation cycle count a class variable instead of a global variable. Such minor changes would cause simulation crashes if not noticed and changed properly.
+
+Table \ref{tab:uvm_tests} lists the number of benchmarks from various benchmark suites (Rodinia, Parboil, Lonestar, Parboil, HPC Challenge) that modified to use UVM.
+
+    \begin{table}[!htbp]
+        \centering
+        \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+        \captionsetup{width=.75\textwidth}
+        \caption {UVM Smart benchmarks}
+            \begin{tabular}{|l|c|c|}
+                \hline
+                \textbf{Benchmark} & \textbf{Input} &  \textbf{Output}\\
+                \hline
+                bfs &  4096 & \\
+                \hline
+                hotspot & 30 6 40 & \\
+                \hline
+                pathfinder & 1000 20 5 & \\
+                \hline
+                backprop & 65536 & \\
+                \hline
+                srad & 1024 127 .5 4 & \\
+                \hline
+            \end{tabular}
+        \label{tab:uvm_tests}
+
+    \end{table}
+
+ The configuration for the GPGPU Simulator supporting Unified Virtual Memory is shown in Listing \ref{lst:sst_config}.
+
+
+\lstdefinelanguage{mooCows}
+{
+  basicstyle={\small\ttfamily},
+  columns=flexible,
+  tag=[s]{[]},
+  tagstyle=\color{dkgreen}\bfseries,
+  usekeywordsintag=true
+}[html]
+
+\lstset{frame=tb,
+  language=mooCows,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\lstinputlisting[caption=Sample GPGPU-Sim UVM Smart Configuration, label=lst:sst_config]{figures1/config}
+

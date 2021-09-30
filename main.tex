@@ -136,21 +136,28 @@
 
 \pagenumbering{arabic}
 
-    \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_abstract}
+    \input{UVMSmart/sst_gpgpu_perf_abstract}
 \section{Introduction}
-    \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_intro}
-\section{Balar Components}
-    \subsection{GPU Scheduler}
-        \input{sst-gpgpu_SAND/sst_gpgpu_sched}
-    \subsection{SM Groups}
-        \input{sst-gpgpu_SAND/sst_gpgpu_sm}
-    \subsection{GPGPU-Sim as a Library}
-        \input{sst-gpgpu_SAND/sst_gpgpu_gpgpusim}
+    \input{UVMSmart/sst_gpgpu_perf_intro}
+\section{Background}
+    \subsection{On-Demand GPU Memory}
+	\input{UVMSmart/sst_gpgpu_perf_pt}
+    \subsection{GPU Page-Fault Handling}
+	\input{UVMSmart/sst_gpgpu_perf_pf}
+    \subsection{Hardware Prefetchers}
+	\input{UVMSmart/sst_gpgpu_perf_prefetchers}
+\section{UVM Smart Integration}
+    \subsection{Merge Code}
+        \input{UVMSmart/sst_gpgpu_sched}
+    \subsection{Optimize Simulation Performance}
+        \input{UVMSmart/sst_gpgpu_opt}
+    \subsection{Improve TLB performance}
+        \input{UVMSmart/sst_gpgpu_tlb}
 \section{Evaluation}
     \subsection{Correlation}
-        \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval-correlation}
+        \input{UVMSmart/sst_gpgpu_perf_eval-correlation}
     \subsection{Kokkos}
-        \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval-kokkos}
+        \input{UVMSmart/sst_gpgpu_perf_eval-tlb}
     \subsection{Lulesh}
         \input{sst-gpgpu_perf_SAND/sst_gpgpu_perf_eval-lulesh}
     \subsection{Parallel Simulation Performance}
