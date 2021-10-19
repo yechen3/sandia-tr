@@ -4,6 +4,6 @@ performance as well as programmability. Shared unified address space between the
 heterogeneous units is a programming model to eliminate the need to explicitly manage 
 the movement of data between CPU and GPU.
 
-GPU vendors, such as AMD and NVIDIA, have released software-managed runtimes that can provide programmers the illusion of unified CPU and GPU memory by automatically migrating data in and out of the GPU memory. However, this runtimes support is not included in the GPGPU-Sim, a very commonly used framework models the features of a modern graphics processor that are relevant to non-graphics applications. To reflect this substantial advance, UVMSmart was proposed, which extended GPGPU-Sim 3.x to incorporate the modelling of on-demand pageing and data migration. This report 
+GPU vendors, such as AMD and NVIDIA, have released software-managed runtimes that can provide programmers the illusion of unified CPU and GPU memory by automatically migrating data in and out of the GPU memory. However, this runtimes support is not included in the GPGPU-Sim \cite{gpgpu_sim}, a very commonly used framework models the features of a modern graphics processor that are relevant to non-graphics applications. To reflect this substantial advance, UVMSmart \cite{9139797} was proposed, which extended GPGPU-Sim 3.x to incorporate the modelling of on-demand pageing and data migration. This report 
 discusses the integration of UVMSmart and GPGPU-Sim 4.0 and the modifications to 
 improve simulation performance and accuracy.
