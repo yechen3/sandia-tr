@@ -1,0 +1,110 @@
+@misc{gpgpu_sim,
+   title = {{GPGPU-Sim 3.x Manual}},
+   author = {Tor M. Aamodt and Wilson W. L. Fung and Inderpreet Singh and Ahmed El-Shafiey and Jimmy Kwa and Tayler Hetherington and Ayub Gubran and Andrew Boktor and Tim Rogers and Ali Bakhoda and Hadi Jooybar},
+   year = {2016},
+   month = {June},
+   url = {http://gpgpu- sim.org/manual/index.php/Main},
+   howpublished = {http://gpgpu- sim.org/manual/index.php/Main},
+   keywords  = {GPGPU-Sim, simulator, GPGPU},
+}
+
+@techreport{v100,
+   title={{NVIDIA Volta V100 White Paper}},
+   institution = {Nvidia},
+   year      = {2017},
+   keywords  = {v100, volta},
+   url = {http://images.nvidia.com/content/volta-architecture/pdf/volta-architecture-whitepaper.pdf},
+}
+
+@techreport{p100,
+   title={{NVIDIA Tesla P100 White Paper}},
+   institution = {Nvidia},
+   year      = {2016},
+   keywords  = {p100, pascal},
+   url = {https://images.nvidia.com/content/pdf/tesla/whitepaper/pascal-architecture-whitepaper.pdf},
+}
+
+@INPROCEEDINGS{uvm_intro,  
+	author={Li, Wenqiang and Jin, Guanghao and Cui, Xuewen and See, Simon},  
+	booktitle={2015 15th IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing},   
+	title={An Evaluation of Unified Memory Technology on NVIDIA GPUs},   year={2015},  		volume={},  
+	number={},  
+	pages={1092-1098},  
+	doi={10.1109/CCGrid.2015.105}
+}
+
+@inproceedings{10.1145/2541940.2541942,
+	author = {Pichai, Bharath and Hsu, Lisa and Bhattacharjee, Abhishek},
+	title = {Architectural Support for Address Translation on GPUs: Designing Memory Management Units for CPU/GPUs with Unified Address Spaces},
+	year = {2014},
+	isbn = {9781450323055},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/2541940.2541942},
+	doi = {10.1145/2541940.2541942},
+	abstract = {The proliferation of heterogeneous compute platforms, of which CPU/GPU is a prevalent
+	example, necessitates a manageable programming model to ensure widespread adoption.
+	A key component of this is a shared unified address space between the heterogeneous
+	units to obtain the programmability benefits of virtual memory.To this end, we are
+	the first to explore GPU Memory Management Units(MMUs) consisting of Translation Lookaside
+	Buffers (TLBs) and page table walkers (PTWs) for address translation in unified heterogeneous
+	systems. We show the performance challenges posed by GPU warp schedulers on TLBs accessed
+	in parallel with L1 caches, which provide many well-known programmability benefits.
+	In response, we propose modest TLB and PTW augmentations that recover most of the
+	performance lost by introducing L1 parallel TLB access. We also show that a little
+	TLB-awareness can make other GPU performance enhancements (e.g., cache-conscious warp
+	scheduling and dynamic warp formation on branch divergence) feasible in the face of
+	cache-parallel address translation, bringing overheads in the range deemed acceptable
+	for CPUs (10-15% of runtime). We presume this initial design leaves room for improvement
+	but anticipate that our bigger insight, that a little TLB-awareness goes a long way
+	in GPUs, will spur further work in this fruitful area.},
+	booktitle = {Proceedings of the 19th International Conference on Architectural Support for Programming Languages and Operating Systems},
+	pages = {743–758},
+	numpages = {16},
+	keywords = {mmus, unified address space, gpus, tlbs},
+	location = {Salt Lake City, Utah, USA},
+	series = {ASPLOS '14}
+}
+
+@INPROCEEDINGS{8192491,
+  author={Yan, Zi and Veselý, Ján and Cox, Guilherme and Bhattacharjee, Abhishek},
+  booktitle={2017 ACM/IEEE 44th Annual International Symposium on Computer Architecture (ISCA)},   title={Hardware translation coherence for virtualized systems},
+  year={2017},
+  volume={},
+  number={},
+  pages={430-443},
+  doi={10.1145/3079856.3080211}
+} 
+
+@INPROCEEDINGS{6835965,
+  author={Power, Jason and Hill, Mark D. and Wood, David A.},
+  booktitle={2014 IEEE 20th International Symposium on High Performance Computer Architecture (HPCA)}, 
+  title={Supporting x86-64 address translation for 100s of GPU lanes}, 
+  year={2014},
+  volume={},
+  number={},
+  pages={568-578},
+  doi={10.1109/HPCA.2014.6835965}
+}
+
+@INPROCEEDINGS{7446077,
+  author={Zheng, Tianhao and Nellans, David and Zulfiqar, Arslan and Stephenson, Mark and Keckler, Stephen W.},
+  booktitle={2016 IEEE International Symposium on High Performance Computer Architecture (HPCA)}, 
+  title={Towards high performance paged memory for GPUs}, 
+  year={2016},
+  volume={},
+  number={},
+  pages={345-357},
+  doi={10.1109/HPCA.2016.7446077}
+}
+
+@INPROCEEDINGS{9139797,
+  author={Ganguly, Debashis and Zhang, Ziyu and Yang, Jun and Melhem, Rami},
+  booktitle={2020 IEEE International Parallel and Distributed Processing Symposium (IPDPS)}, 
+  title={Adaptive Page Migration for Irregular Data-intensive Applications under GPU Memory Oversubscription}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={451-461},
+  doi={10.1109/IPDPS47924.2020.00054}
+}

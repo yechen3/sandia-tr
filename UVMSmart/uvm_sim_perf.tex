@@ -1,0 +1,24 @@
+In Section B.1 and B.2, we mentioned that GPUs may choose to implement page-fault handling by having the GMMU stop the GPU TLB from taking new translation requests until the SW runtime has performed the page migration and GMMU can successfully return a page translation. Under such a scenario, each individual CU could be blocked for thousands of cycles while its page fault is handled, but other non-faulting compute units can continue make progress, enabling some overlap between GPU kernel execution and on-demand memory migration. Alternatively, to enable the CU to continue executing in the presence of a page-fault, the CU TLB and GMMU need to be augmented. Even though UVM Smart choose the latter that enables compute unit execution under page faults, in the worst case, page-fault latency cannot be hidden if all warps are waiting for their page-fault handling requests, especially common at the beginning of kernel execution.
+
+The page-fault latency includes the page-fault handling latency and page migration time. As described in section C.1, the page-fault handling latency is fixed and the page migration time is calculated once the memory transfer size is known, thus the simulator knows in which cycle the pages is ready in GPU memory before the page-fault handling request is sent. This simulator assumption is a opportunity to skip those cycles when all warps are stalled due to page-fault handling.
+
+
+    \begin{table}[!htbp]
+        \centering
+        \setlength{\abovecaptionskip}{6pt plus 1pt minus 1pt}
+        \captionsetup{width=.75\textwidth}
+        \caption {CUDA API Calls Supported by UVMSmart.}
+            \begin{tabular}{|l|c|c|}
+                \hline
+                CUDACall  \\
+                \hline
+                \hline
+                \texttt{cudaMallocManaged}  \\
+                \hline
+                \texttt{cudaDeviceSynchronize}  \\
+                \hline
+                \texttt{cudaMemprefetchAsync}  \\
+                \hline
+            \end{tabular}
+        \label{tab:apis}
+    \end{table}
